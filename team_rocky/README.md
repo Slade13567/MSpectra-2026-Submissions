@@ -1,4 +1,7 @@
 Team Name: Rocky
+
+Company: TB Solutions
+
 Members: 
 Shreyas Hari (bl.sc.u4aie25041) (lead)
 Praveen A (bl.sc.u4aie25035)
@@ -14,3 +17,7 @@ Tech Stack
 - Backend: Flask
 - Frontend: Next.js
 - Database: Supabase
+
+presentation link: https://gamma.app/docs/RCA-Rockys-Conveyor-Automation-8m5rjn8w678nfbg
+deployment link: m-spectra-2026-submissions-two.vercel.app
+video demonstration: https://drive.google.com/file/d/1FAe8qjhURLa34dkP2DrX4VXiEBWTTNV_/view?usp=sharing
