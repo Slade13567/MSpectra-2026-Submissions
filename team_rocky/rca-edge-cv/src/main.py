@@ -6,6 +6,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from ultralytics import YOLO
+import time
 
 # --- INITIALIZATION ---
 load_dotenv()
@@ -18,8 +19,7 @@ inference_frame = None
 lock = threading.Lock()
 logged_ids = set() 
 
-# 1. LOAD YOUR CUSTOM BRAIN
-# Assuming you moved 'best.pt' to your root rca-edge-cv folder
+
 model = YOLO("best.pt")
 
 # Setup Supabase
@@ -27,16 +27,20 @@ url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
+video_path = r"assets/vid2.mp4"
 def generate_frames(show_inference=False):
     global output_frame, inference_frame, lock
     while True:
         with lock:
             active_frame = inference_frame if show_inference else output_frame
-            if active_frame is None:
-                continue
-            (flag, encodedImage) = cv2.imencode(".jpg", active_frame)
-            if not flag:
-                continue
+            
+        if active_frame is None:
+            time.sleep(0.01) # ⬅️ ADD THIS: Prevents the CPU from locking up
+            continue
+            
+        (flag, encodedImage) = cv2.imencode(".jpg", active_frame)
+        if not flag:
+            continue
         yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n')
 
 @app.route('/video_feed')

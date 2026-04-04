@@ -1,26 +1,18 @@
-# 1. Using Python 3.12 as established
-FROM python:3.12-slim
+# Use the official YOLOv8 image (Pre-loaded with CUDA and Video Codecs)
+FROM ultralytics/ultralytics:latest-python
 
-# 2. Install system dependencies for OpenCV
-RUN apt-get update && apt-get install -y \
-    libgl1 \
-    libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender1 \
-    && rm -rf /var/lib/apt/lists/*
-
-# 3. Set the working directory
+# Set the internal working directory
 WORKDIR /app
 
-# 4. Copy requirements and install
+# Copy requirements and install
 COPY requirements.txt .
-# Upgrade pip and install with a higher timeout for those heavy AI wheels
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir --default-timeout=100 -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copy the rest of the code (including src/ and best.pt)
+# Copy everything from rca-edge-cv into /app
 COPY . .
 
-# 6. Run your main script
+# Ensure Python doesn't buffer logs (so you see your DB successes in real-time)
+ENV PYTHONUNBUFFERED=1
+
+# Run the engine
 CMD ["python", "src/main.py"]

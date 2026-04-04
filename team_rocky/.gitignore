@@ -2,24 +2,25 @@
 # RCA Master Ignore File
 # ========================
 
-# 1. Secret Keys (NEVER UPLOAD THESE)
+# 1. Secret Keys 
 .env
 .env.local
 *.env*
 
 # 2. Python / Edge Pipeline
-# This catches venv/runs/datasets regardless of which folder they are in
-**/venv/
-**/__pycache__/
-**/datasets/
-**/runs/
-
-# Ignore all model files...
+rca-edge-cv/venv/
+rca-edge-cv/__pycache__/
 *.pt
 *.onnx
-# ...EXCEPT your final trained model
-!best.pt
 
 # 3. Next.js / Dashboard
 rca-dashboard/node_modules/
 rca-dashboard/.next/
+
+
+venv/
+__pycache__/
+datasets/
+runs/
+*.pt
+!best.pt
